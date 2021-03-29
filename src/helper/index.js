@@ -41,7 +41,7 @@ export function conversionCategoryName(key) {
   let name = '';
   switch (key) {
     case 'firstPrize':
-      name = '招投标';
+      name = '抽签';
       break;
     default:
       break;

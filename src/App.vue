@@ -27,43 +27,47 @@
     </div>
     <transition name="bounce">
       <div id="resbox" v-show="showRes">
-        <p @click="showRes = false">{{ categoryName }}抽奖结果：</p>
-        <div class="container">
-          <span
-            v-for="item in resArr"
-            :key="item"
-            class="itemres"
-            :style="resCardStyle"
-            :data-id="item"
-            @click="showRes = false"
-            :class="{
-              numberOver:
-                !!photos.find(d => d.id === item) ||
-                !!list.find(d => d.key === item)
-            }"
-          >
-            <span class="cont" v-if="!photos.find(d => d.id === item)">
-              <span
-                v-if="!!list.find(d => d.key === item)"
-                :style="{
-                  fontSize: '40px'
-                }"
-              >
-                {{ list.find(d => d.key === item).name }}
+        <el-scrollbar style="height: 100%;">
+          <!-- @click="showRes = false" -->
+          <p>{{ categoryName }}结果：</p>
+          <div class="container">
+            <!-- @click="showRes = false" -->
+            <span
+              v-for="(item, index) in resArr"
+              :key="item"
+              class="itemres"
+              :style="resCardStyle"
+              :data-id="item"
+              :data-index="index + 1"
+              :class="{
+                numberOver:
+                  !!photos.find(d => d.id === item) ||
+                  !!list.find(d => d.key === item)
+              }"
+            >
+              <span class="cont" v-if="!photos.find(d => d.id === item)">
+                <span
+                  v-if="!!list.find(d => d.key === item)"
+                  :style="{
+                    fontSize: '24px'
+                  }"
+                >
+                  {{ list.find(d => d.key === item).name }}
+                </span>
+                <span v-else>
+                  {{ item }}
+                </span>
               </span>
-              <span v-else>
-                {{ item }}
-              </span>
+              <img
+                v-if="photos.find(d => d.id === item)"
+                :src="photos.find(d => d.id === item).value"
+                alt="photo"
+                :width="160"
+                :height="160"
+              />
             </span>
-            <img
-              v-if="photos.find(d => d.id === item)"
-              :src="photos.find(d => d.id === item).value"
-              alt="photo"
-              :width="160"
-              :height="160"
-            />
-          </span>
-        </div>
+          </div>
+        </el-scrollbar>
       </div>
     </transition>
 
@@ -87,6 +91,7 @@
       @toggle="toggle"
       @resetConfig="reloadTagCanvas"
       @getPhoto="getPhoto"
+      @showResult="showRes = true"
       :running="running"
       :closeRes="closeRes"
     />
@@ -137,11 +142,11 @@ export default {
       const style = { fontSize: '30px' };
       const { number } = this.config;
       if (number < 100) {
-        style.fontSize = '56px';
-      } else if (number < 1000) {
-        style.fontSize = '48px';
-      } else if (number < 10000) {
         style.fontSize = '36px';
+      } else if (number < 1000) {
+        style.fontSize = '32px';
+      } else if (number < 10000) {
+        style.fontSize = '28px';
       }
       return style;
     },
@@ -232,8 +237,8 @@ export default {
       category: '',
       audioPlaying: false,
       audioSrc: null, // bgaudio
-      whiteList: [14, 16, 18, 20, 22, 24, 26, 28, 30],
-      blackList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      whiteList: [40, 42, 43, 44, 45, 46, 47],
+      blackList: [1, 4, 7, 13, 15, 22, 24, 26, 28, 36, 38, 39, 41]
     };
   },
   watch: {
@@ -317,7 +322,7 @@ export default {
       window.TagCanvas.Reload('rootcanvas');
     },
     closeRes() {
-      this.showRes = false;
+      // this.showRes = false;
     },
     toggle(form) {
       const { speed, config } = this;
@@ -334,7 +339,7 @@ export default {
         });
       } else {
         // 开始抽奖
-        this.showRes = false;
+        // this.showRes = false;
         if (!form) {
           return;
         }
@@ -477,6 +482,7 @@ export default {
   top: 50%;
   left: 50%;
   width: 1280px;
+  height: 100%;
   transform: translateX(-50%) translateY(-50%);
   text-align: center;
   p {
@@ -485,20 +491,20 @@ export default {
     line-height: 120px;
   }
   .container {
-    display: flex;
-    justify-content: left;
-    flex-wrap: wrap;
+    // display: flex;
+    // justify-content: left;
+    // flex-wrap: wrap;
   }
   .itemres {
     background: #fff;
-    width: 80px;
-    height: 80px;
+    width: 96%;
+    height: 32px;
     border-radius: 4px;
-    border: 1px solid #ccc;
+    border: 1px solid rgba(204, 204, 204, 0.4);
     line-height: 80px;
     font-weight: bold;
-    margin-right: 24px;
-    margin-bottom: 24px;
+    margin-right: 12px;
+    margin-bottom: 6px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -510,21 +516,23 @@ export default {
       align-items: center;
     }
     &:nth-child(odd) {
-      background: rgb(186, 247, 186);
+      background: #d5b77a;
     }
     &:nth-child(even) {
-      background: rgb(247, 186, 186);
+      background: #2e2529;
+      color: #d5b77a;
     }
     &.numberOver::before {
-      content: attr(data-id);
-      width: 30px;
-      height: 22px;
-      line-height: 22px;
+      content: attr(data-index);
+      width: 65px;
+      height: 100%;
+      line-height: 32px;
+      color: #333;
       background-color: #fff;
       position: absolute;
       bottom: 0;
       left: 0;
-      font-size: 14px;
+      font-size: 18px;
       // border-radius: 50%;
       z-index: 1;
     }

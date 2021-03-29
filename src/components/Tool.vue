@@ -3,6 +3,9 @@
     <el-button @click="startHandler" type="primary" size="mini">{{
       running ? '停止' : '开始'
     }}</el-button>
+    <!-- <el-button size="mini" @click="showResult">
+      结果
+    </el-button> -->
     <!-- <el-button size="mini" @click="showRemoveoptions = true">
       重置
     </el-button> -->
@@ -196,7 +199,55 @@ export default {
         qty: 1,
         allin: false
       },
-      listStr: ''
+      listStr: `
+1	市局国保支队第六支部
+2	市局治安支队第三党支部
+3	市局基层基础管理支队第二党支部
+4	市局技侦支队四大队党支部
+5	市局技侦支队八大队党支部
+6	市局网警分局驻大型网站网安大队党支部
+7	市局信息经济公安分局党支部
+8	市局出入境管理局签证大队党支部
+9	杭州市看守所女子分所党支部
+10	杭州市拘留所党支部
+11	交治分局运河水上派出所党支部
+12	地铁分局第一党支部
+13	市人民警察学校训练部党支部
+14	市局刑侦支队七大队党支部
+15	市局特勤局勤务二大队党支部
+16	市局特勤局勤务三大队党支部
+17	交警机动大队党支部
+18	交警拱墅大队湖墅中队党支部
+19	交警景区大队南山中队支部
+20	交警下城大队武林中队党支部
+21	交警下城大队东新(原庆春)中队党支部
+22	上城分局湖滨派出所党支部
+23	上城分局法制大队党支部
+24	下城分局看守所党支部
+25	江干分局东站枢纽派出所党支部
+26	拱墅分局米市巷派出所党支部
+27	拱墅分局出入境管理大队党支部
+28	拱墅分局康桥派出所党支部
+29	西湖分局文新派出所党支部
+30	西湖分局玉泉派出所党支部
+31	钱塘新区分局情指行中心党支部
+32	钱塘新区分局出入境管理大队党支部
+33	钱塘新区分局国保大队党支部
+34	西湖景区分局南山派出所党支部
+35	萧山分局情指联勤中心总党支部
+36	萧山分局市北派出所党支部
+37	余杭分局仓前派出所党支部
+38	余杭分局塘栖派出所党支部
+39	富阳分局城西派出所党支部
+40	富阳分局交警大队车管所党支部
+41	临安分局高虹派出所党支部
+42	临安分局昌北派出所党支部
+43	桐庐县局指挥中心党支部
+44	淳安县局青溪派出所党支部
+45	淳安县局侦查打击署党支部
+46	建德市局交警大队车管所党支部
+47	建德市局寿昌派出所党支部
+      `
     };
   },
   watch: {
@@ -205,6 +256,9 @@ export default {
         this.removeInfo.type = 0;
       }
     }
+  },
+  mounted() {
+    this.transformList()
   },
   methods: {
     resetConfig() {
@@ -265,7 +319,7 @@ export default {
         return this.$message.error('请选择本次抽取的奖项');
       }
       if (this.remain <= 0) {
-        return this.$message.error('抽奖已结束');
+        return this.$message.error('抽签已结束');
       }
       if (this.form.mode === 99) {
         if (this.form.qty <= 0) {
@@ -293,6 +347,9 @@ export default {
         // this.showSetwat = true;
       }
     },
+    showResult() {
+      this.$emit('showResult');
+    },
     transformList() {
       const { listStr } = this;
       if (!listStr) {
@@ -316,10 +373,10 @@ export default {
       }
       this.$store.commit('setList', list);
 
-      this.$message({
-        message: '保存成功',
-        type: 'success'
-      });
+      // this.$message({
+      //   message: '保存成功',
+      //   type: 'success'
+      // });
       this.showImport = false;
       this.$nextTick(() => {
         this.$emit('resetConfig');

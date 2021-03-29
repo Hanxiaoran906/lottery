@@ -1,6 +1,6 @@
 ## 定制化开发请联系 vito.z@qq.com
 
-## 招投标
+## 抽签
 
 [演示地址](https://vitozyf.github.io/lucky-draw/index.html#/?tdsourcetag=s_pctim_aiomsg)
 

@@ -112,10 +112,10 @@ export default {
       this.$store.commit('setConfig', this.form);
       this.$emit('update:visible', false);
 
-      this.$message({
-        message: '保存成功',
-        type: 'success'
-      });
+      // this.$message({
+      //   message: '保存成功',
+      //   type: 'success'
+      // });
 
       this.$nextTick(() => {
         this.$emit('resetconfig');
